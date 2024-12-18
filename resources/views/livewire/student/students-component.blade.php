@@ -86,34 +86,6 @@
 
 @push('scripts')
     <script>
-        // document.addEventListener('livewire:load', () => {
-        //     // Listen for the `closeModal` event
-        //     Livewire.on('closeModal', () => {
-        //         const modal = new bootstrap.Modal(document.getElementById('myModal'));
-        //         modal.hide();
-        //         // const modalElement = document.getElementById('myModal');
-        //         // const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        //         // modalInstance.hide(); // Close the modal
-        //     });
-
-        //     // Handle alert browser events
-        //     window.addEventListener('alert', event => {
-        //         alert(event.detail.message); // Display alert message
-        //     });
-        // });
-
-        // document.addEventListener('livewire:load', () => {
-        //     // Listen for the `closeModal` event
-        //     Livewire.on('closeModal', () => {
-        //         const modal = new bootstrap.Modal(document.getElementById('myModal'));
-        //         modal.hide();
-        //     });
-        // });
-
-        // window.livewire.on('close', () => {
-        //     $('#myModal').modal('hide');
-        // });
-
         window.addEventListener('btn-close', event => {
             Swal.fire({
                 position: "top-end",
@@ -125,97 +97,6 @@
             $('#myModal').modal('hide');
 
         });
-
-        // window.addEventListener('show-modal', event => {
-        //     $('#myModal').modal('show');
-        // })
-
-        // window.addEventListener('alert', event => {
-        //     alert(event.detail.message); // Display alert message
-        // });
-
-        // window.addEventListener('close-modal', event => {
-        //     $('#myModal').modal('hide');
-        // });
-
-        // window.addEventListener('show-modal', event => {
-        //     $('#myModal').modal('show');
-        // })
-
-        // window.addEventListener('btn-delete-confirmation', event => {
-        //     Swal.fire({
-        //         title: "Are you sure?",
-        //         text: "You won't be able to revert this!",
-        //         icon: "warning",
-        //         showCancelButton: true,
-        //         confirmButtonColor: "#3085d6",
-        //         cancelButtonColor: "#d33",
-        //         confirmButtonText: "Yes, delete it!"
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             Swal.fire({
-        //                 title: "Deleted!",
-        //                 text: "Your file has been deleted.",
-        //                 icon: "success"
-        //             });
-        //         }
-        //     });
-        // });
-
-        // window.addEventListener('close-modal', event => {
-        //     $('#myModal').modal('hide');
-        // });
-
-        // window.addEventListener('show-modal', event => {
-        //     $('#myModal').modal('show');
-        // })
-
-
-        // Delete Student
-        // document.addEventListener('delete', event => {
-        //     Swal.fire({
-        //         title: "Are you sure?",
-        //         text: "You won't be able to revert this!",
-        //         icon: "warning",
-        //         showCancelButton: true,
-        //         confirmButtonColor: "#3085d6",
-        //         cancelButtonColor: "#d33",
-        //         confirmButtonText: "Yes, delete it!"
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             Swal.fire({
-        //                 title: "Deleted!",
-        //                 text: "Your file has been deleted.",
-        //                 icon: "success"
-        //             });
-        //             // livewire.dispatch('delete')
-        //         }
-        //     })
-
-        //     // Livewire.on('delete', () => {
-
-        //     // })
-        // })
-
-
-        // Swal.fire({
-        // title: "Are you sure?",
-        // text: "You won't be able to revert this!",
-        // icon: "warning",
-        // showCancelButton: true,
-        // confirmButtonColor: "#3085d6",
-        // cancelButtonColor: "#d33",
-        // confirmButtonText: "Yes, delete it!"
-        // }).then((result) => {
-        // if (result.isConfirmed) {
-        //     Swal.fire({
-        //         title: "Deleted!",
-        //         text: "Your file has been deleted.",
-        //         icon: "success"
-        //     });
-        // }
-        // });
-
 
         document.addEventListener('livewire:load', () => {
             // Listen for the `confirmDelete` event
