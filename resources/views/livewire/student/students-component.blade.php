@@ -23,8 +23,7 @@
 
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <input type="search" class="form-control w-25" placeholder="search"
-                                    wire:model="searchTerm" style="float: right;" />
+                                    <input type="search" class="form-control w-25" placeholder="search" wire:model.live="searchTerm" style="float: right;" />
                             </div>
                         </div>
 
@@ -49,7 +48,7 @@
                                             <td>{{ $student->phone }}</td>
                                             <td style="text-align: center;">
                                                 <button class="btn btn-sm btn-secondary"
-                                                    wire:click="viewStudentDetails({{ $student->id }})">View</button>
+                                                    wire:click="viewStudentDetail({{ $student->id }})">View</button>
                                                 <button class="btn btn-sm btn-primary"
                                                     wire:click="EditStudent({{ $student->id }})">Edit</button>
                                                 <button class="btn btn-sm btn-danger"
@@ -152,10 +151,12 @@
                             <div class="mb-3 mt-3 w-25">
                                 <label for="student_id" class="form-label">Student ID</label>
                                 <input type="number" class="form-control" wire:model="student_id"
-                                    autocomplete="off" />
+                                    id="student_id" />
                                 <!-- for validation -->
                                 @error('student_id')
-                                    <span class="text-danger" style="font-size: 12.5px;">{{ $message }}</span>
+                                    <span class="text-danger" style="font-size: 12.5px;">
+                                        {{ $message }}
+                                    </span>
                                 @enderror
                             </div>
                             <div class="mb-3 mt-3 w-75">
@@ -218,8 +219,52 @@
         </div>
     </div>
 
-</div>
+    <!-- View Student Modal -->
+    <div wire:ignore.self class="modal fade" id="ViewStudentModal" tabindex="-1" role="dialog"
+        aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg ">
+            <div class="modal-content">
 
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Student Information</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        wire:click="closeViewStudentModal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>ID :</th>
+                                <td>{{ $view_student_id }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Name :</th>
+                                <td>{{ $view_student_name }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Email :</th>
+                                <td>{{ $view_student_email }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Phone :</th>
+                                <td>{{ $view_student_phone }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
 
 
 @push('scripts')
@@ -273,6 +318,11 @@
 
             $('#DeleteStudentModal').modal('hide');
 
+        });
+
+        // view Student Data
+        window.addEventListener('view-student-modal', event => {
+            $('#ViewStudentModal').modal('show');
         });
     </script>
 @endpush
