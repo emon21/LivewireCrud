@@ -10,7 +10,7 @@ class StudentsComponent extends Component
 {
     use WithPagination;
 
-    public Student $student;
+    // public Student $student;
 
     public $student_id, $name, $email, $phone, $student_edit_id, $student_delete_id;
     public $view_student_id, $view_student_name, $view_student_email, $view_student_phone;
@@ -20,12 +20,12 @@ class StudentsComponent extends Component
     //Input fields on update validation
     public function updated($fields)
     {
-        $this->validateOnly($fields, [
-            'student_id' => 'required|unique:students,student_id,' . $this->student_edit_id . '', //Validation with ignoring own data
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required|numeric',
-        ]);
+        // $this->validateOnly($fields, [
+        //     'student_id' => 'required|unique:students,student_id,' . $this->student_edit_id . '', //Validation with ignoring own data
+        //     'name' => 'required',
+        //     'email' => 'required|email',
+        //     'phone' => 'required|numeric',
+        // ]);
     }
 
     //Create Student
@@ -33,7 +33,7 @@ class StudentsComponent extends Component
     {
         //on form submit validation
         $this->validate([
-            'student_id' => 'required|unique:students', //students = table name
+            'student_id' => 'required', //students = table name
             'name' => 'required',
             'email' => 'required|email',
             'phone' => 'required|numeric',
@@ -46,17 +46,19 @@ class StudentsComponent extends Component
         $student->name = $this->name;
         $student->email = $this->email;
         $student->phone = $this->phone;
-
         $student->save();
 
 
         session()->flash('message', 'New student has been added successfully');
 
+        // $this->reset();
+        $this->student_id = '';
+        $this->name = '';
+        $this->email = '';
+        $this->phone = '';
 
-
-
-        $this->reset();
-        $this->dispatch('btn-close');
+        //For hide modal after add student success
+        $this->dispatch('close-modal');
     }
 
 
@@ -71,10 +73,10 @@ class StudentsComponent extends Component
 
     # Edit Student
 
-    public function EditStudents($id)
+    public function EditStudent(Student $student)
     {
 
-        $student = Student::where('id', $id)->first();
+        // $student = Student::where('id', $id)->first();
 
         $this->student_edit_id = $student->id;
         $this->student_id = $student->student_id;
@@ -95,13 +97,13 @@ class StudentsComponent extends Component
         //     'name' => 'required',
         //     'email' => 'required|email',
         //     'phone' => 'required|numeric',
-        // ]);
+        // ]);f
 
         // $student = Student::find($this->student_edit_id);
         $student = Student::where('id', $this->student_edit_id)->first();
 
-        //Add Student Data
-        $student = new Student();
+        //Update Student Data
+
         $student->student_id = $this->student_id;
         $student->name = $this->name;
         $student->email = $this->email;
@@ -111,7 +113,7 @@ class StudentsComponent extends Component
 
         session()->flash('message', 'Student has been Updated successfully');
 
-        $this->dispatch('btn-close');
+        $this->dispatch('update-student');
     }
 
 
@@ -135,7 +137,7 @@ class StudentsComponent extends Component
 
         session()->flash('message', 'Student has been deleted successfully');
 
-        $this->dispatch('btn-close');
+        $this->dispatch('delete-student');
 
         $this->student_delete_id = '';
     }

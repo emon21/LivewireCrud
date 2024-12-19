@@ -1,5 +1,5 @@
 <!-- The Modal -->
-<div wire:ignore.self class="modal fade" id="myModal">
+<div wire:ignore.self class="modal fade" id="addStudentModal">
     <div class="modal-dialog modal-dialog-centered modal-lg ">
         <div class="modal-content">
 
@@ -11,7 +11,7 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form wire:submit.prevent="storeStudentData">
+                <form wire:submit.prevent="storeStudentData()">
                     <div class="d-flex gap-2 mb-3 mt-3 justify-content-between align-items-center">
                         <div class="mb-3 mt-3 w-50">
                             <label for="student_id" class="form-label">Student ID:</label>
