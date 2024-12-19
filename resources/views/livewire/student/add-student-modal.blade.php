@@ -41,7 +41,7 @@
                     <div class="mb-3 mt-3">
                         <label for="phone" class="form-label">Phone No:</label>
                         <input type="number" class="form-control" id="phone" placeholder="Enter phone"
-                            wire:model="phone">
+                            wire:model="phone" max="11">
                         @error('phone')
                             <span class="text-danger py-3">{{ $message }}</span>
                         @enderror

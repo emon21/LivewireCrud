@@ -13,7 +13,7 @@
                         {{-- <button class="btn btn-sm btn-primary" style="float: right;" data-toggle="modal"
                             data-target="#addStudentModal">Add New Student</button> --}}
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                            Open modal
+                            Create Student
                         </button>
                     </div>
                     <div class="card-body">
@@ -52,20 +52,21 @@
                                                 <button class="btn btn-sm btn-secondary"
                                                     wire:click="viewStudentDetails({{ $student->id }})">View</button>
                                                 <button class="btn btn-sm btn-primary"
-                                                    wire:click="editStudents({{ $student->id }})">Edit</button>
-                                                {{-- <button class="btn btn-sm btn-danger"
-                                                    wire:click="deleteConfirmation({{ $student->id }})">Delete</button> --}}
+                                                    wire:click="EditStudents({{ $student->id }})">Edit</button>
+                                                <button class="btn btn-sm btn-danger"
+                                                    wire:click="DeleteConfirm({{ $student->id }})">Delete</button>
 
-                                                <button class="btn btn-danger btn-sm"
-                                                    wire:click="deleteConfirmation({{ $student->id }})">
+                                                {{-- <button class="btn btn-danger btn-sm"
+                                                    wire:click="DeleteConfirm({{ $student->id }})">
                                                     Delete
-                                                </button>
+                                                </button> --}}
                                             </td>
                                         </tr>
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="4" style="text-align: center;"><small>No Student Found</small>
+                                        <td colspan="5" style="text-align: center;"><small
+                                                class="text-danger fw-bold">No Student Found</small>
                                         </td>
                                     </tr>
                                 @endif
@@ -79,59 +80,80 @@
     </div>
 
     @include('livewire.student.add-student-modal')
+    @include('livewire.student.edit-student-modal')
+    @include('livewire.student.show-delete-confirmation-modal')
 
-
+    <!-- The Modal -->
+    
 
 </div>
 
-@push('scripts')
-    <script>
-        window.addEventListener('btn-close', event => {
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Your work has been saved",
-                showConfirmButton: false,
-                timer: 1500
-            });
-            $('#myModal').modal('hide');
+    {{-- // Delete Modal --}}
 
-        });
 
-        document.addEventListener('livewire:load', () => {
-            // Listen for the `confirmDelete` event
-            Livewire.on('confirmDelete', () => {
+    @push('scripts')
+        <script>
+            window.addEventListener('btn-close', event => {
+
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Trigger the Livewire method to delete the item
-                        Livewire.dispatch('confirmedDelete');
-
-                        // Optional success notification
-                        Swal.fire(
-                            'Deleted!',
-                            'Your item has been deleted.',
-                            'success'
-                        );
-                    }
+                    position: "top-end",
+                    icon: "success",
+                    title: 'Updated Successfully',
+                    showConfirmButton: false,
+                    timer: 1500
                 });
+                $('#myModal').modal('hide');
+                $('#EditStudentModal').modal('hide');
+                $('#DeleteStudentModal').modal('hide');
+
             });
 
-            // Listen for the `itemDeleted` event (optional for additional UI updates)
-            Livewire.on('deleteConfirmation', () => {
-                Swal.fire(
-                    'Deleted!',
-                    'Your item has been successfully removed.',
-                    'success'
-                );
+
+            //Edit Student Data
+            window.addEventListener('edit-student-modal', event => {
+                $('#EditStudentModal').modal('show');
             });
-        });
-    </script>
-@endpush
+
+
+            //Delete Student Data
+            window.addEventListener('delete-student-modal', event => {
+                $('#DeleteStudentModal').modal('show');
+            });
+
+            // document.addEventListener('livewire:load', () => {
+            //     // Listen for the `confirmDelete` event
+            //     Livewire.on('confirmDelete', () => {
+            //         Swal.fire({
+            //             title: 'Are you sure?',
+            //             text: "You won't be able to revert this!",
+            //             icon: 'warning',
+            //             showCancelButton: true,
+            //             confirmButtonColor: '#3085d6',
+            //             cancelButtonColor: '#d33',
+            //             confirmButtonText: 'Yes, delete it!'
+            //         }).then((result) => {
+            //             if (result.isConfirmed) {
+            //                 // Trigger the Livewire method to delete the item
+            //                 Livewire.dispatch('confirmedDelete');
+
+            //                 // Optional success notification
+            //                 Swal.fire(
+            //                     'Deleted!',
+            //                     'Your item has been deleted.',
+            //                     'success'
+            //                 );
+            //             }
+            //         });
+            //     });
+
+            //     // Listen for the `itemDeleted` event (optional for additional UI updates)
+            //     Livewire.on('deleteConfirmation', () => {
+            //         Swal.fire(
+            //             'Deleted!',
+            //             'Your item has been successfully removed.',
+            //             'success'
+            //         );
+            //     });
+            // });
+        </script>
+    @endpush
