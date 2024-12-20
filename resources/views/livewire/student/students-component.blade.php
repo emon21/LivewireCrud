@@ -1,10 +1,51 @@
 <div>
+    <style>
+        .search-field {
+            background-color: transparent;
+            background-image: url(https://wp-themes.com/wp-content/themes/twentythirteen/images/search-icon.png);
+            background-position: 5px center;
+            background-repeat: no-repeat;
+            background-size: 24px 24px;
+            border: none;
+            cursor: pointer;
+            height: 40px;
+            margin: 3px 0;
+            padding: 0 0 0 34px;
+            position: relative;
+            transition: width 400ms ease, background 400ms ease;
+            width: 0px;
+            cursor: pointer;
+        }
+
+        .search-field:focus {
+            background-color: #d4cece;
+            border: 2px solid #c3c0ab;
+            cursor: text;
+            outline: 0;
+            width: 250px;
+            color: #fff;
+        }
+
+        .hide {
+            display: none
+        }
+
+
+        .alert-success {
+            background: #f4f4f4;
+            color: #269612;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+    </style>
     <div class="container mt-5">
         <div class="row mb-5">
             <div class="col-md-12 text-center">
                 <h3 class="text-success text-bold"><strong>Laravel LivewireCRUD with Bootstrap Modal</strong></h3>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -15,15 +56,27 @@
                             Create Student
                         </button>
                     </div>
+
+
                     <div class="card-body">
                         @if (session()->has('message'))
-                            <div class="alert alert-success text-center">{{ session('message') }}</div>
+                            <div class="alert alert-success text-center hide">{{ session('message') }}</div>
                         @endif
-
+                        
+                        <div class="alert alert-success hide">User Created successfully</div>
 
                         <div class="row mb-3">
-                            <div class="col-md-12">
-                                    <input type="search" class="form-control w-25" placeholder="search" wire:model.live="searchTerm" style="float: right;" />
+
+
+
+                            <div class="col-md-12 d-flex justify-content-between align-items-center">
+                                <label>
+                                    <input type="search" class="search-field rounded" placeholder="Search …"
+                                        wire:model.live="searchTerm" />
+                                </label>
+
+                                <input type="search" class="form-control w-25" placeholder="search"
+                                    wire:model.live="searchTerm" style="float: right;" />
                             </div>
                         </div>
 
@@ -77,192 +130,17 @@
         </div>
     </div>
 
-
-
     <!-- Add Student Modal -->
-    <div wire:ignore.self class="modal fade" id="addStudentModal">
-        <div class="modal-dialog modal-dialog-centered modal-lg ">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Create Student</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <form wire:submit.prevent="storeStudentData">
-                        <div class="d-flex gap-2 mb-3 mt-3 justify-content-between align-items-center">
-                            <div class="mb-3 mt-3 w-50">
-                                <label for="student_id" class="form-label">Student ID:</label>
-                                <input type="number" class="form-control" id="student_id"
-                                    placeholder="Enter Student ID" wire:model="student_id">
-                                @error('student_id')
-                                    <span class="text-danger py-3">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="mb-3 mt-3 w-50">
-                                <label for="name" class="form-label">Student Name:</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter email"
-                                    wire:model="name">
-                                @error('name')
-                                    <span class="text-danger py-3">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <label for="email" class="form-label">Email:</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter email"
-                                wire:model="email">
-                            @error('email')
-                                <span class="text-danger py-3">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <label for="phone" class="form-label">Phone No:</label>
-                            <input type="number" class="form-control" id="phone" placeholder="Enter phone"
-                                wire:model="phone">
-                            @error('phone')
-                                <span class="text-danger py-3">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <button type="submit" class="btn btn-primary">Create Student</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('livewire.student.add-student-modal')
 
     <!-- Edit Student Modal -->
-    <div wire:ignore.self class="modal fade" id="EditStudentModal" tabindex="-1" role="dialog"
-        aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg ">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Student</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <form wire:submit.prevent="EditStudentData">
-                        <div class="d-flex gap-2 mb-3 mt-3 justify-content-between align-items-center">
-                            <div class="mb-3 mt-3 w-25">
-                                <label for="student_id" class="form-label">Student ID</label>
-                                <input type="number" class="form-control" wire:model="student_id"
-                                    id="student_id" />
-                                <!-- for validation -->
-                                @error('student_id')
-                                    <span class="text-danger" style="font-size: 12.5px;">
-                                        {{ $message }}
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="mb-3 mt-3 w-75">
-                                <label for="name" class="form-label">Student Name:</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter email"
-                                    wire:model="name">
-                                <!-- for validation -->
-                                @error('name')
-                                    <span class="text-danger py-3">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="d-flex gap-2 justify-content-between align-items-center">
-                            <div class="mb-3 mt-3 w-50">
-                                <label for="email" class="form-label">Email:</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter email"
-                                    wire:model="email">
-                                <!-- for validation -->
-                                @error('email')
-                                    <span class="text-danger py-3">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="mb-3 mt-3 w-50">
-                                <label for="phone" class="form-label">Phone No:</label>
-                                <input type="number" class="form-control" id="phone" placeholder="Enter phone"
-                                    wire:model="phone">
-                                <!-- for validation -->
-                                @error('phone')
-                                    <span class="text-danger py-3">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Update Student</button>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    @include('livewire.student.edit-student-modal')
 
     <!-- Delete Student Modal -->
-    <div wire:ignore.self class="modal fade" id="DeleteStudentModal" tabindex="-1" role="dialog"
-        aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Delete Student</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this student?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" wire:click="cancel()" data-bs-dismiss="modal"
-                        aria-label="Close">Close</button>
-                    <button type="button" class="btn btn-danger" wire:click="DeleteStudentData()">Yes
-                        Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('livewire.student.delete-student-modal')
 
     <!-- View Student Modal -->
-    <div wire:ignore.self class="modal fade" id="ViewStudentModal" tabindex="-1" role="dialog"
-        aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg ">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Student Information</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        wire:click="closeViewStudentModal"></button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <th>ID :</th>
-                                <td>{{ $view_student_id }}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Name :</th>
-                                <td>{{ $view_student_name }}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Email :</th>
-                                <td>{{ $view_student_email }}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Phone :</th>
-                                <td>{{ $view_student_phone }}</td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    @include('livewire.student.view-student-modal')
 
 </div>
 
@@ -297,7 +175,10 @@
                 showConfirmButton: false,
                 timer: 1500
             });
+
+
             $('#EditStudentModal').modal('hide');
+
         });
 
         //Delete Student Data
@@ -323,6 +204,16 @@
         // view Student Data
         window.addEventListener('view-student-modal', event => {
             $('#ViewStudentModal').modal('show');
+        });
+
+
+        $(document).ready(function() {
+            // alert('hiiiii');
+            $("#demo").click(function() {
+                $(".alert-success").slideToggle("slow").delay(2000).slideToggle("slow");
+                // alert('hiiiii');
+
+            });
         });
     </script>
 @endpush

@@ -12,7 +12,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" wire:click="cancel()" data-bs-dismiss="modal"
                     aria-label="Close">Close</button>
-                <button type="button" class="btn btn-danger" wire:click="DeleteStudentData()">Yes Delete</button>
+                <button type="button" class="btn btn-danger" wire:click="DeleteStudentData()">Yes
+                    Delete</button>
             </div>
         </div>
     </div>

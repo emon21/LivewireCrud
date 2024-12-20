@@ -30,19 +30,27 @@ class StudentsComponent extends Component
     }
 
     //Create Student
-    public function storeStudentData()
+    public function storeStudentData(Student $student)
     {
         //on form submit validation
         $this->validate([
             'student_id' => 'required', //students = table name
-            'name' => 'required',
+            'name' => 'required|string',
             'email' => 'required|email',
             'phone' => 'required|numeric',
+        ], [
+
+            'student_id.required' => 'Student ID is Empty',
+            'name.required' => 'Sorry Name is Empty',
+            'email.required' => 'Sorry Email is Empty',
+            'phone.required' => 'Sorry Phone is Empty',
+            'phone.required' => 'Sorry Allow Only Number',
+
         ]);
 
 
         //Add Student Data
-        $student = new Student();
+        // $student = new Student();
         $student->student_id = $this->student_id;
         $student->name = $this->name;
         $student->email = $this->email;
@@ -78,10 +86,10 @@ class StudentsComponent extends Component
     }
     # Edit Student
 
-    public function EditStudent($id)
+    public function EditStudent(Student $student)
     {
 
-        $student = Student::where('id', $id)->first();
+        // $student = Student::where('id', $id)->first();
 
         $this->student_edit_id = $student->id;
         $this->student_id = $student->student_id;
@@ -97,12 +105,6 @@ class StudentsComponent extends Component
     {
 
         //validation code after added
-        // $this->validate([
-        //     'student_id' => 'required|unique:students,student_id,' . $this->student_edit_id . '',
-        //     'name' => 'required',
-        //     'email' => 'required|email',
-        //     'phone' => 'required|numeric',
-        // ]);f
 
         $this->validate([
             'student_id' => 'required|unique:students,student_id,' . $this->student_edit_id . '', //Validation with ignoring own data
@@ -124,6 +126,8 @@ class StudentsComponent extends Component
         $student->save();
 
         session()->flash('message', 'Student has been Updated successfully');
+
+        $this->resetInput();
 
         $this->dispatch('update-student');
     }
@@ -186,16 +190,16 @@ class StudentsComponent extends Component
         // Get All Students
         // $students = Student::latest()->paginate(6);
 
-        // $students = Student::where('name', 'like', '%' . $this->searchTerm . '%')->orWhere('email', 'like', '%' . $this->searchTerm . '%')->orWhere('student_id', 'like', '%' . $this->searchTerm . '%')->orWhere('phone', 'like', '%' . $this->searchTerm . '%')->paginate(6);
+        $students = Student::where('name', 'like', '%' . $this->searchTerm . '%')->orWhere('email', 'like', '%' . $this->searchTerm . '%')->orWhere('student_id', 'like', '%' . $this->searchTerm . '%')->orWhere('phone', 'like', '%' . $this->searchTerm . '%')->latest()->paginate(6);
 
         // $students = Student::search($this->searchTerm)->paginate(6);
-        return view('livewire.student.students-component', [
-            'students' => Student::where('name', 'like', '%' . $this->searchTerm . '%')->paginate(6),
-        ]);
+        // return view('livewire.student.students-component', [
+        //     'students' => Student::where('name', 'like', '%' . $this->searchTerm . '%')->paginate(6),
+        // ]);
 
 
         // return view('livewire.student.students-component', ['students' => $students])->extends('layouts.base');
-        
-        // return view('livewire.student.students-component', ['students' => $students])->layout('layouts.base');
+
+        return view('livewire.student.students-component', ['students' => $students])->layout('layouts.base');
     }
 }
